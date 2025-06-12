@@ -66,18 +66,6 @@ Siga os passos abaixo para ter o projeto rodando em sua máquina:
 
 ---
 
-## 🖼️ Screenshots
-
-Aqui estão algumas imagens do projeto em ação:
-
-![Screenshot da Página Principal](https://imgur.com/5Wf9RVO)
-_Visão geral do cardápio de hambúrgueres._
-
-![Screenshot do Modal de Carrinho](https://imgur.com/AdrH9V4)
-_O modal de carrinho com itens adicionados._
-
----
-
 ## 🔮 Próximos Passos (Melhorias Futuras)
 
 Este projeto está em constante evolução! Algumas ideias para futuras melhorias incluem:
