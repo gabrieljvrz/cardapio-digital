@@ -343,7 +343,7 @@
 
     <!-- MODAL CART -->
 
-    <div class="bg-black/60 w-full h-full fixed top-0 left-0 z-[99] items-center justify-center hidden">
+    <div class="bg-black/60 w-full h-full fixed top-0 left-0 z-[99] items-center justify-center hidden" id="cart-modal">
 
         <div class="bg-white p-5 rounded-md min-w-[90%] md:min-w-[600px]">
             <h2 class="text-center font-bold text-2xl mb-2">Meu Carrinho</h2>
@@ -356,10 +356,10 @@
             <input 
             type="text"
             placeholder="Digite seu endereço completo..."
-            id="adress"
+            id="address"
             class="w-full border-2 p-1 rounded my-1"
             >
-            <p class="text-red-600 hidden" id="adress-warn">Digite seu endereço completo</p>
+            <p class="text-red-600 hidden" id="address-warn">Digite seu endereço completo</p>
 
             <div class="flex items-center justify-between mt-5 w-full">
                 <button id="close-modal-btn" class="hover:bg-red-600 duration-200 hover:text-white px-4 py-1 rounded">Fechar</button>
@@ -385,5 +385,8 @@
     </footer>
     <!-- FIM BUTTON CART FOOTER -->
 
+    <script src="script.js"></script>
+
   </body>
+
 </html>
