@@ -755,18 +755,6 @@ video {
   background-color: rgb(24 24 27 / var(--tw-bg-opacity));
 }
 
-.bg-home {
-  background-image: url('/assets/bg.png');
-}
-
-.bg-cover {
-  background-size: cover;
-}
-
-.bg-center {
-  background-position: center;
-}
-
 .p-1 {
   padding: 0.25rem;
 }
