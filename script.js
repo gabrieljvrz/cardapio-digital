@@ -78,7 +78,7 @@ function updateCartModal(){
                 <p class="font-medium mt-2">R$${item.price.toFixed(2)}</p>    
             </div>
  
-            <button class="remove-from-cart-btn hover:bg-red-600 duration-200 hover:text-white px-4 py-1 rounded" data-name="${item.name}">
+            <button class="remove-from-cart-btn bg-red-600 duration-200 text-white px-4 py-1 rounded" data-name="${item.name}">
             Remover 
             </button>
         
@@ -162,17 +162,22 @@ checkoutBtn.addEventListener("click", function(){
         return;
     }
 
+    let total = 0;
+
     // Enviar pedido para o WhatsApp
     const cartItems = cart.map((item) => {
+        total += item.price * item.quantity
         return (
-            `${item.name}, Quantidade: (${item.quantity}), Preço: R$${item.price}\n`
+            `${item.name}, Quantidade: (${item.quantity}), Preço: R$${item.price}`
         )
-    }).join("")
+    }).join("\n")
 
-    const message = encodeURIComponent(cartItems)
-    const phone = "+5581996238168"
+    const message = encodeURIComponent(
+    `${cartItems}\n\nTotal: R$${total.toFixed(2)}\nEndereço: ${addressInput.value}`
+    );
+    const phone = "+5581986213573"
 
-    window.open(`https://wa.me/${phone}?text=${message}Endereço: ${addressInput.value}`, "_blank")
+    window.open(`https://wa.me/${phone}?text=${message}`, "_blank")
 
     cart = [];
     updateCartModal();
