@@ -1,18 +1,73 @@
+//Importando o array dos produtos
+import { products } from './products.js';
+
 //Manipulação do DOM
-const menu = document.getElementById("menu")
-const cartBtn = document.getElementById("cart-btn")
-const cartModal = document.getElementById("cart-modal")
-const cartItemsContainer = document.getElementById("cart-items")
-const cartTotal = document.getElementById("cart-total")
-const checkoutBtn = document.getElementById("checkout-btn")
-const closeModalBtn = document.getElementById("close-modal-btn")
-const cartCounter = document.getElementById("cart-count")
-const addressInput = document.getElementById("address")
-const addressWarn = document.getElementById("address-warn")
-const notesInput = document.getElementById("notes")
+const menu = document.getElementById("menu");
+const cartBtn = document.getElementById("cart-btn");
+const cartModal = document.getElementById("cart-modal");
+const cartItemsContainer = document.getElementById("cart-items");
+const cartTotal = document.getElementById("cart-total");
+const checkoutBtn = document.getElementById("checkout-btn");
+const closeModalBtn = document.getElementById("close-modal-btn");
+const cartCounter = document.getElementById("cart-count");
+const addressInput = document.getElementById("address");
+const addressWarn = document.getElementById("address-warn");
+const notesInput = document.getElementById("notes");
+const hamburgersContainer = document.getElementById("hamburgers-container");
+const drinksContainer = document.getElementById("drinks-container");
+const sideDishesContainer = document.getElementById("side-dishes-container");
+const dessertsContainer = document.getElementById("desserts-container");
 
 // Array do carrinho
 let cart = [];
+
+//Função para carregar os produtos no menu
+function loadProducts() {
+    hamburgersContainer.innerHTML = '';
+    drinksContainer.innerHTML = '';
+    sideDishesContainer.innerHTML = '';
+    dessertsContainer.innerHTML = '';
+
+    products.forEach(product => {
+        const productHTML = `
+            <div class="flex gap-2">
+                <img
+                    src="${product.image}"
+                    alt="${product.name}"
+                    class="w-28 h-28 rounded-md hover:scale-110 duration-300"
+                />
+                <div class="w-full">
+                    <p class="font-bold">${product.name}</p>
+                    <p class="text-sm">
+                        ${product.description}
+                    </p>
+                    <div class="flex items-center gap-2 justify-between mt-1">
+                        <p class="font-bold text-lg">R$${product.price.toFixed(2).replace('.', ',')}</p> 
+                        <button
+                            class="bg-gray-900 px-5 rounded add-to-cart-btn"
+                            data-name="${product.name}"
+                            data-price="${product.price}"
+                        >
+                            <i class="fa fa-cart-plus text-lg text-white"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        if (product.category === "hamburgers") {
+            hamburgersContainer.innerHTML += productHTML;
+        } else if (product.category === "drinks") {
+            drinksContainer.innerHTML += productHTML;
+        } else if (product.category === "side-dishes") {
+            sideDishesContainer.innerHTML += productHTML;
+        } else if (product.category === "desserts") {
+            dessertsContainer.innerHTML += productHTML;
+        } 
+    });
+}
+
+document.addEventListener("DOMContentLoaded", loadProducts);
 
 // Abrir o carrinho
 cartBtn.addEventListener("click", function() {
@@ -109,7 +164,7 @@ function updateCartModal(){
                     <span class= data-item-quantity="${item.name}">${item.quantity}</span>
                     <button class="quantity-btn add-quantity-btn bg-gray-300 px-2 rounded text-red-600 font-bold" data-name="${item.name}">+</button>
             </div>
-                <p class="font-medium mt-2">R$${item.price.toFixed(2)}</p>    
+                <p class="font-medium mt-2">R$${item.price.toFixed(2).replace('.', ',')}</p>    
             </div>
 
             <button class="remove-from-cart-btn bg-red-600 duration-200 text-white px-4 py-1 rounded" data-name="${item.name}">
@@ -235,12 +290,12 @@ checkoutBtn.addEventListener("click", function(){
 
     if(notesInput.value === ""){
         const message = encodeURIComponent(
-        `${cartItems}\n\nTotal: R$${total.toFixed(2)}\nEndereço: ${addressInput.value}`
+        `${cartItems}\n\nTotal: R$${total.toFixed(2).replace('.', ',')}\nEndereço: ${addressInput.value}`
         );
         window.open(`https://wa.me/${phone}?text=${message}`, "_blank")
     }else{
         const message = encodeURIComponent(
-        `${cartItems}\n\nTotal: R$${total.toFixed(2)}\nEndereço: ${addressInput.value}\nObservações: ${notesInput.value}`
+        `${cartItems}\n\nTotal: R$${total.toFixed(2).replace('.', ',')}\nEndereço: ${addressInput.value}\nObservação: ${notesInput.value}`
         );
         window.open(`https://wa.me/${phone}?text=${message}`, "_blank")
     }
