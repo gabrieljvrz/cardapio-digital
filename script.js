@@ -1,3 +1,4 @@
+//Manipulação do DOM
 const menu = document.getElementById("menu")
 const cartBtn = document.getElementById("cart-btn")
 const cartModal = document.getElementById("cart-modal")
@@ -8,6 +9,7 @@ const closeModalBtn = document.getElementById("close-modal-btn")
 const cartCounter = document.getElementById("cart-count")
 const addressInput = document.getElementById("address")
 const addressWarn = document.getElementById("address-warn")
+const notesInput = document.getElementById("notes")
 
 // Array do carrinho
 let cart = [];
@@ -56,7 +58,7 @@ function addToCart(name, price){
             quantity: 1,
         })
     }
-
+//Validação ao adicionar o produto ao carrinho
     Toastify({
             text: "Produto adicionado ao carrinho!",
             duration: 1500,
@@ -140,6 +142,7 @@ cartItemsContainer.addEventListener("click", function(event){
     }
 })
 
+//Função para remover um item do carrinho
 function removeItemCart(name){
     const index = cart.findIndex(item => item.name === name);
 
@@ -178,11 +181,6 @@ addressInput.addEventListener("input", function(event){
     }
 })
 
-//Função para pegar o que você escreve no input de observações
-notesInput.addEventListener("input", function(event){
-
-})
-
 //Finalizar pedido
 checkoutBtn.addEventListener("click", function(){
 
@@ -202,8 +200,21 @@ checkoutBtn.addEventListener("click", function(){
         return;
     }
 
-    if(cart.length === 0) return;
+//Validação se o carrinho está vazio ao tentar enviar o pedido
+    if(cart.length === 0){Toastify({
+            text: "Ops, seu carrinho está vazio!",
+            duration: 3000,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "center", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+                background: "#ef4444",
+            },
+        }).showToast();
+        return;}
 
+//Validação se o campo de endereço está vazio ao tentar enviar o pedido
     if(addressInput.value === ""){
         addressWarn.classList.remove("hidden")
         addressInput.classList.add("border-red-600")
@@ -212,7 +223,7 @@ checkoutBtn.addEventListener("click", function(){
 
     let total = 0;
 
-    // Enviar pedido para o WhatsApp
+    // Enviar pedido para o WhatsApp do restaurante
     const cartItems = cart.map((item) => {
         total += item.price * item.quantity
         return (
@@ -234,6 +245,7 @@ checkoutBtn.addEventListener("click", function(){
         window.open(`https://wa.me/${phone}?text=${message}`, "_blank")
     }
 
+//Validação que o pedido foi enviado com sucesso
     Toastify({
             text: "Pedido realizado com sucesso!",
             duration: 1000000,
@@ -245,7 +257,8 @@ checkoutBtn.addEventListener("click", function(){
                 background: "#22c55e",
             },
         }).showToast();
-    
+
+//Esvaziando o carrinho e os campos de observação e endereço ao enviar o pedido
     cart = [];
     updateCartModal();
     addressInput.value = ""; 
