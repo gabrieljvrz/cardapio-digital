@@ -57,9 +57,36 @@ function addToCart(name, price){
         })
     }
 
+    Toastify({
+            text: "Produto adicionado ao carrinho!",
+            duration: 1500,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "center", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+                background: "#22c55e",
+            },
+        }).showToast();
+
     updateCartModal()
 
 }
+
+//Aumentar e diminuir a quantidade no carrinho
+cartItemsContainer.addEventListener("click", function(event){
+
+    const button = event.target;
+
+    const itemName = button.closest('.flex.items-center.justify-between').querySelector('.font-medium').textContent; // Uma forma de pegar o nome se não estiver no data-name do botão
+    
+    if(event.target.classList.contains("add-quantity-btn")){
+        addToCart(itemName);
+
+    } else if(event.target.classList.contains("remove-quantity-btn")) {
+        removeItemCart(itemName)
+    }
+})
 
 //Função para atualizar o carrinho
 function updateCartModal(){
@@ -74,17 +101,22 @@ function updateCartModal(){
         <div class="flex items-center justify-between">
             <div>
                 <p class="font-medium">${item.name}</p>
-                <p>Quantidade: ${item.quantity}</p>
+                <div class="flex items-center gap-2">
+                    <p>Quantidade: </p>
+                    <button class="quantity-btn remove-quantity-btn bg-gray-300 px-2 rounded text-red-600 font-bold" data-name="${item.name}">-</button> 
+                    <span class= data-item-quantity="${item.name}">${item.quantity}</span>
+                    <button class="quantity-btn add-quantity-btn bg-gray-300 px-2 rounded text-red-600 font-bold" data-name="${item.name}">+</button>
+            </div>
                 <p class="font-medium mt-2">R$${item.price.toFixed(2)}</p>    
             </div>
- 
+
             <button class="remove-from-cart-btn bg-red-600 duration-200 text-white px-4 py-1 rounded" data-name="${item.name}">
             Remover 
             </button>
         
         </div>
     `   
-    
+
     total += item.price * item.quantity
     
     cartItemsContainer.appendChild(cartItemElement)
@@ -104,7 +136,7 @@ cartItemsContainer.addEventListener("click", function(event){
     if(event.target.classList.contains("remove-from-cart-btn")){
         const name = event.target.getAttribute("data-name")
     
-        removeItemCart(name);
+        removeFullItemFromCart(name);
     }
 })
 
@@ -125,6 +157,17 @@ function removeItemCart(name){
     }
 }
 
+//Função para o botão remove-from-cart-btn
+function removeFullItemFromCart(name){
+    const index = cart.findIndex(item => item.name === name);
+
+    if(index !== -1){
+        cart.splice(index, 1);
+        updateCartModal();
+        return;
+    }
+}
+
 //Função para pegar o que você escreve no input de endereço
 addressInput.addEventListener("input", function(event){
     let inputValue = event.target.value;
@@ -133,6 +176,11 @@ addressInput.addEventListener("input", function(event){
         addressInput.classList.remove("border-red-600")
         addressWarn.classList.add("hidden")
     }
+})
+
+//Função para pegar o que você escreve no input de observações
+notesInput.addEventListener("input", function(event){
+
 })
 
 //Finalizar pedido
@@ -172,15 +220,36 @@ checkoutBtn.addEventListener("click", function(){
         )
     }).join("\n")
 
-    const message = encodeURIComponent(
-    `${cartItems}\n\nTotal: R$${total.toFixed(2)}\nEndereço: ${addressInput.value}`
-    );
-    const phone = "+5581986213573"
+    const phone = "+5581996238168"
 
-    window.open(`https://wa.me/${phone}?text=${message}`, "_blank")
+    if(notesInput.value === ""){
+        const message = encodeURIComponent(
+        `${cartItems}\n\nTotal: R$${total.toFixed(2)}\nEndereço: ${addressInput.value}`
+        );
+        window.open(`https://wa.me/${phone}?text=${message}`, "_blank")
+    }else{
+        const message = encodeURIComponent(
+        `${cartItems}\n\nTotal: R$${total.toFixed(2)}\nEndereço: ${addressInput.value}\nObservações: ${notesInput.value}`
+        );
+        window.open(`https://wa.me/${phone}?text=${message}`, "_blank")
+    }
 
+    Toastify({
+            text: "Pedido realizado com sucesso!",
+            duration: 1000000,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "center", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+                background: "#22c55e",
+            },
+        }).showToast();
+    
     cart = [];
     updateCartModal();
+    addressInput.value = ""; 
+    notesInput.value = "";  
 
 })
 
