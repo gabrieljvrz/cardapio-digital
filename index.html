@@ -135,6 +135,52 @@
 
     <!-- FIM MODAL CART -->
 
+    <!-- MODAL ITEM -->
+    <div class="bg-black/60 w-full h-full fixed top-0 left-0 z-[99] items-center justify-center hidden px-4" id="product-modal">
+      <div class="bg-white p-5 rounded-md w-full md:min-w-[600px] max-w-4xl md:gap-2">
+
+        <div class="flex flex-col md:flex-row gap-6">
+
+            <div class="md:w-1/2 flex justify-center items-center">
+                <img 
+                    src="" 
+                    alt="" 
+                    class="w-full h-auto max-h-72 object-fit rounded-md md:h-80 md:object-contain"
+                    id="modal-product-img"
+                >
+            </div>
+
+            <div class="md:w-1/2 flex flex-col">
+                <h2 class="text-2xl font-bold mb-2" id="modal-product-title"></h2>
+                <p class="text-sm mb-4 flex-grow" id="modal-product-description"></p>
+
+                <div class="flex items-center justify-between mt-3">
+                    <h2 class="font-bold text-lg" id="modal-product-price"></h2>
+                </div>
+
+                <div class="flex items-center gap-4 mt-5 w-full">
+
+                    <button id="close-product-modal-btn" class="w-full bg-red-600 duration-200 text-white px-4 py-2 rounded">
+                        Fechar
+                    </button>
+
+                    <button
+                        class="bg-green-600 px-5 py-2 rounded add-to-cart-btn"
+                        data-name=""
+                        data-price=""
+                        id="modal-add-to-cart-btn"
+                        >
+                        <i class="fa fa-cart-plus text-lg text-white"></i>
+                    </button>
+                </div>
+            </div>
+            
+        </div>
+
+    </div>
+</div>
+    <!-- FIM MODAL ITEM -->
+
     <!-- BUTTON CART FOOTER -->
     <footer class="w-full bg-red-600 py-3 fixed bottom-0 z-40 flex items-center justify-center">
         <button 

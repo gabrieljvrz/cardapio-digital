@@ -17,6 +17,12 @@ const hamburgersContainer = document.getElementById("hamburgers-container");
 const drinksContainer = document.getElementById("drinks-container");
 const sideDishesContainer = document.getElementById("side-dishes-container");
 const dessertsContainer = document.getElementById("desserts-container");
+const productModal = document.getElementById("product-modal");
+const modalProductImg = document.getElementById("modal-product-img");
+const modalProductTitle = document.getElementById("modal-product-title");
+const modalProductDescription = document.getElementById("modal-product-description")
+const modalProductPrice = document.getElementById("modal-product-price");
+const closeProductModalBtn = document.getElementById("close-product-modal-btn");
 
 // Array do carrinho
 let cart = [];
@@ -30,11 +36,15 @@ function loadProducts() {
 
     products.forEach(product => {
         const productHTML = `
-            <div class="flex gap-2">
+            <div class="flex gap-2 product-card" 
+            data-name="${product.name}" 
+            data-price="${product.price}" 
+            data-description="${product.description}" 
+            data-image="${product.image}">
                 <img
                     src="${product.image}"
                     alt="${product.name}"
-                    class="w-28 h-28 rounded-md hover:scale-110 duration-300"
+                    class="w-28 h-28 rounded-md hover:scale-110 duration-200 cursor-pointer"
                 />
                 <div class="w-full">
                     <p class="font-bold">${product.name}</p>
@@ -68,6 +78,54 @@ function loadProducts() {
 }
 
 document.addEventListener("DOMContentLoaded", loadProducts);
+
+//Abrir o modal do produto
+menu.addEventListener("click", function(event) {
+    if(!event.target.closest(".add-to-cart-btn")){
+        
+        let productCard = event.target.closest(".product-card")
+
+        if(productCard){
+            const name = productCard.getAttribute("data-name");
+            const price = parseFloat(productCard.getAttribute("data-price"));
+            const description = productCard.getAttribute("data-description");
+            const image = productCard.getAttribute("data-image");
+
+            modalProductTitle.textContent = name;
+            modalProductPrice.textContent = price.toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL"
+            });
+            modalProductDescription.textContent = description;
+            modalProductImg.src = image;
+
+            productModal.style.display = "flex"
+            
+            const modalAddToCartBtn = document.getElementById("modal-add-to-cart-btn");
+            modalAddToCartBtn.setAttribute("data-name", name);
+            modalAddToCartBtn.setAttribute("data-price", price);
+
+            //Função para adicionar ao carrinho direto do modal
+            modalAddToCartBtn.addEventListener("click", function(){
+                addToCart(name, price)
+                productModal.style.display = "none";
+                return;
+            })
+        }
+    }
+})
+
+//Fechar o modal do produto ao clicar fora
+productModal.addEventListener("click", function(event){
+    if(event.target === productModal){
+        productModal.style.display = "none"
+    }
+})
+
+//Fechar o modal do produto ao clicar no botão
+closeProductModalBtn.addEventListener("click", function(){
+    productModal.style.display = "none"
+})
 
 // Abrir o carrinho
 cartBtn.addEventListener("click", function() {
@@ -160,9 +218,9 @@ function updateCartModal(){
                 <p class="font-medium">${item.name}</p>
                 <div class="flex items-center gap-2">
                     <p>Quantidade: </p>
-                    <button class="quantity-btn remove-quantity-btn bg-gray-300 px-2 rounded text-red-600 font-bold" data-name="${item.name}">-</button> 
+                    <button class="quantity-btn remove-quantity-btn bg-none px-2 rounded text-red-600 font-bold" data-name="${item.name}">-</button> 
                     <span class= data-item-quantity="${item.name}">${item.quantity}</span>
-                    <button class="quantity-btn add-quantity-btn bg-gray-300 px-2 rounded text-red-600 font-bold" data-name="${item.name}">+</button>
+                    <button class="quantity-btn add-quantity-btn bg-none px-2 rounded text-red-600 font-bold" data-name="${item.name}">+</button>
             </div>
                 <p class="font-medium mt-2">R$${item.price.toFixed(2).replace('.', ',')}</p>    
             </div>
